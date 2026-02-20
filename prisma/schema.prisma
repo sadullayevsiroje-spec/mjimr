@@ -15,6 +15,7 @@ model Article {
   doi         String?  @unique
   pages       String?
   keywords    String?
+  pdfUrl      String?
   publishedAt DateTime
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

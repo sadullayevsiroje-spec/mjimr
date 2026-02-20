@@ -183,6 +183,23 @@ export default async function ArticlePage({
 
         <div className="prose max-w-none">
           <h2 className="text-xl font-bold mb-3">Full Text</h2>
+          
+          {article.pdfUrl && (
+            <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+              <a 
+                href={article.pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Download PDF
+              </a>
+            </div>
+          )}
+          
           <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">
             {article.content}
           </div>

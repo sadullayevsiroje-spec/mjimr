@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { title, abstract, content, keywords, pages, doi, issueId, authorIds, publishedAt } = body
+    const { title, abstract, content, keywords, pages, doi, issueId, authorIds, publishedAt, pdfUrl } = body
 
     if (!title || !abstract || !content || !issueId || !authorIds || authorIds.length === 0) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -18,6 +18,7 @@ export async function POST(request: Request) {
         keywords: keywords || null,
         pages: pages || null,
         doi: doi || null,
+        pdfUrl: pdfUrl || null,
         publishedAt: new Date(publishedAt),
         issueId,
         authors: {

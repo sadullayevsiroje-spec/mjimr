@@ -10,6 +10,8 @@ export default function NewArticlePage() {
   const [issues, setIssues] = useState<any[]>([])
   const [authors, setAuthors] = useState<any[]>([])
   const [selectedAuthors, setSelectedAuthors] = useState<string[]>([])
+  const [pdfFile, setPdfFile] = useState<File | null>(null)
+  const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
     fetch('/api/issues')
@@ -25,18 +27,39 @@ export default function NewArticlePage() {
     e.preventDefault()
     setLoading(true)
 
-    const formData = new FormData(e.currentTarget)
-    const data = {
-      title: formData.get('title'),
-      abstract: formData.get('abstract'),
-      content: formData.get('content'),
-      keywords: formData.get('keywords'),
-      pages: formData.get('pages'),
-      doi: formData.get('doi'),
-      issueId: formData.get('issueId'),
-      authorIds: selectedAuthors,
-      publishedAt: formData.get('publishedAt')
-    }
+    try {
+      // Upload PDF first if exists
+      let pdfUrl = null
+      if (pdfFile) {
+        setUploading(true)
+        const uploadFormData = new FormData()
+        uploadFormData.append('file', pdfFile)
+        
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          body: uploadFormData
+        })
+        
+        if (uploadRes.ok) {
+          const uploadData = await uploadRes.json()
+          pdfUrl = uploadData.url
+        }
+        setUploading(false)
+      }
+
+      const formData = new FormData(e.currentTarget)
+      const data = {
+        title: formData.get('title'),
+        abstract: formData.get('abstract'),
+        content: formData.get('content'),
+        keywords: formData.get('keywords'),
+        pages: formData.get('pages'),
+        doi: formData.get('doi'),
+        issueId: formData.get('issueId'),
+        authorIds: selectedAuthors,
+        publishedAt: formData.get('publishedAt'),
+        pdfUrl
+      }
 
     try {
       const res = await fetch('/api/articles', {
@@ -185,13 +208,27 @@ export default function NewArticlePage() {
           )}
         </div>
 
+        <div>
+          <label className="block text-sm font-medium mb-2">PDF File</label>
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {pdfFile && (
+            <p className="text-sm text-gray-600 mt-1">Selected: {pdfFile.name}</p>
+          )}
+          <p className="text-xs text-gray-500 mt-1">Upload PDF version of the article (recommended for Google Scholar indexing)</p>
+        </div>
+
         <div className="flex gap-4">
           <button
             type="submit"
-            disabled={loading || selectedAuthors.length === 0}
+            disabled={loading || uploading || selectedAuthors.length === 0}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
           >
-            {loading ? 'Creating...' : 'Create Article'}
+            {uploading ? 'Uploading PDF...' : loading ? 'Creating...' : 'Create Article'}
           </button>
           <Link href="/admin/articles" className="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300">
             Cancel
