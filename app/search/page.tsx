@@ -70,7 +70,7 @@ export default async function SearchPage({
                 </Link>
               </h2>
               <p className="text-sm text-gray-600 mb-2">
-                {article.authors.map(a => a.author.name).join(', ')}
+                {article.authors.map((a: any) => a.author.name).join(', ')}
               </p>
               <p className="text-sm text-gray-500 mb-3">
                 Vol. {article.issue.volume} No. {article.issue.issue} ({article.issue.year})
