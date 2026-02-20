@@ -5,8 +5,47 @@ import Footer from '@/components/layout/Footer'
 import { journal } from '@/data/journal'
 
 export const metadata: Metadata = {
-  title: journal.name,
+  title: {
+    default: journal.name,
+    template: `%s | ${journal.shortName}`
+  },
   description: journal.description,
+  keywords: journal.keywords,
+  authors: [{ name: journal.publisher }],
+  creator: journal.publisher,
+  publisher: journal.publisher,
+  metadataBase: new URL('https://mjimr.vercel.app'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://mjimr.vercel.app',
+    title: journal.name,
+    description: journal.description,
+    siteName: journal.name,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: journal.name,
+    description: journal.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    // Google Search Console verification (keyinroq qo'shiladi)
+    // google: 'your-verification-code',
+  },
 }
 
 export default function RootLayout({

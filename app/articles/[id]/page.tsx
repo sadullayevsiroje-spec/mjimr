@@ -1,6 +1,62 @@
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { journal } from '@/data/journal'
+import type { Metadata } from 'next'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string }
+}): Promise<Metadata> {
+  const article = await prisma.article.findUnique({
+    where: { id: params.id },
+    include: {
+      issue: true,
+      authors: {
+        include: { author: true },
+        orderBy: { order: 'asc' }
+      }
+    }
+  })
+
+  if (!article) {
+    return {
+      title: 'Article Not Found'
+    }
+  }
+
+  const authors = article.authors.map(a => a.author.name).join(', ')
+
+  return {
+    title: `${article.title} | ${journal.shortName}`,
+    description: article.abstract,
+    authors: article.authors.map(a => ({ name: a.author.name })),
+    openGraph: {
+      title: article.title,
+      description: article.abstract,
+      type: 'article',
+      publishedTime: article.publishedAt.toISOString(),
+      authors: article.authors.map(a => a.author.name),
+    },
+    other: {
+      // Google Scholar meta tags
+      'citation_title': article.title,
+      'citation_author': article.authors.map(a => a.author.name).join('; '),
+      'citation_publication_date': article.publishedAt.toISOString().split('T')[0],
+      'citation_journal_title': journal.name,
+      'citation_volume': article.issue.volume.toString(),
+      'citation_issue': article.issue.issue.toString(),
+      'citation_firstpage': article.pages?.split('-')[0] || '',
+      'citation_lastpage': article.pages?.split('-')[1] || '',
+      'citation_doi': article.doi || '',
+      'citation_issn': journal.issn,
+      'citation_language': 'en',
+      'citation_abstract_html_url': `https://mjimr.vercel.app/articles/${article.id}`,
+      'citation_pdf_url': `https://mjimr.vercel.app/articles/${article.id}/pdf`,
+    }
+  }
+}
 
 export default async function ArticlePage({
   params,
@@ -22,8 +78,57 @@ export default async function ArticlePage({
     notFound()
   }
 
+  // JSON-LD structured data for Google Scholar
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": article.title,
+    "abstract": article.abstract,
+    "author": article.authors.map(a => ({
+      "@type": "Person",
+      "name": a.author.name,
+      "affiliation": a.author.affiliation ? {
+        "@type": "Organization",
+        "name": a.author.affiliation
+      } : undefined
+    })),
+    "datePublished": article.publishedAt.toISOString(),
+    "publisher": {
+      "@type": "Organization",
+      "name": journal.publisher
+    },
+    "isPartOf": {
+      "@type": "PublicationIssue",
+      "issueNumber": article.issue.issue.toString(),
+      "isPartOf": {
+        "@type": "PublicationVolume",
+        "volumeNumber": article.issue.volume.toString(),
+        "isPartOf": {
+          "@type": "Periodical",
+          "name": journal.name,
+          "issn": journal.issn
+        }
+      }
+    },
+    "pageStart": article.pages?.split('-')[0],
+    "pageEnd": article.pages?.split('-')[1],
+    "identifier": article.doi ? {
+      "@type": "PropertyValue",
+      "propertyID": "DOI",
+      "value": article.doi
+    } : undefined,
+    "url": `https://mjimr.vercel.app/articles/${article.id}`,
+    "inLanguage": "en"
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       <article className="bg-white rounded-lg shadow-lg p-8">
         <div className="mb-6">
           <Link href="/search" className="text-blue-600 hover:underline text-sm">
