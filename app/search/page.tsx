@@ -8,7 +8,7 @@ export default async function SearchPage({
 }) {
   const query = searchParams.q || ''
   
-  let articles = []
+  let articles: any[] = []
   if (query.length > 0) {
     articles = await prisma.article.findMany({
       where: {
