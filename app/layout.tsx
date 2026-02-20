@@ -43,8 +43,9 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // Google Search Console verification (keyinroq qo'shiladi)
-    // google: 'your-verification-code',
+    // Google Search Console verification
+    // Replace with your actual verification code from Google Search Console
+    google: 'your-google-verification-code-here',
   },
 }
 
