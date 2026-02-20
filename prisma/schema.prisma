@@ -74,3 +74,17 @@ model User {
   role      String   @default("editor")
   createdAt DateTime @default(now())
 }
+
+model EditorialBoard {
+  id          String   @id @default(cuid())
+  name        String
+  title       String
+  position    String
+  affiliation String
+  email       String?
+  photoUrl    String?
+  bio         String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

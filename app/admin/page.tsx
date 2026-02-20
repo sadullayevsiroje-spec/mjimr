@@ -6,9 +6,10 @@ export default async function AdminDashboard() {
     prisma.article.count(),
     prisma.author.count(),
     prisma.issue.count(),
+    prisma.editorialBoard.count(),
   ])
 
-  const [articleCount, authorCount, issueCount] = stats
+  const [articleCount, authorCount, issueCount, boardCount] = stats
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -27,6 +28,10 @@ export default async function AdminDashboard() {
           <h3 className="text-gray-500 text-sm mb-2">Total Issues</h3>
           <p className="text-3xl font-bold">{issueCount}</p>
         </div>
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-gray-500 text-sm mb-2">Editorial Board</h3>
+          <p className="text-3xl font-bold">{boardCount}</p>
+        </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -41,6 +46,10 @@ export default async function AdminDashboard() {
         <Link href="/admin/authors" className="bg-purple-600 text-white p-6 rounded-lg shadow hover:bg-purple-700">
           <h3 className="text-xl font-bold mb-2">Manage Authors</h3>
           <p>View and edit author information</p>
+        </Link>
+        <Link href="/admin/editorial-board" className="bg-orange-600 text-white p-6 rounded-lg shadow hover:bg-orange-700">
+          <h3 className="text-xl font-bold mb-2">Editorial Board</h3>
+          <p>Manage editorial board members</p>
         </Link>
         <Link href="/" className="bg-gray-600 text-white p-6 rounded-lg shadow hover:bg-gray-700">
           <h3 className="text-xl font-bold mb-2">View Site</h3>
