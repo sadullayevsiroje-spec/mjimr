@@ -61,7 +61,6 @@ export default function NewArticlePage() {
         pdfUrl
       }
 
-    try {
       const res = await fetch('/api/articles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
