@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  title       String
+  abstract    String
+  content     String
+  doi         String?  @unique
+  pages       String?
+  keywords    String?
+  publishedAt DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  issueId     String
+  issue       Issue    @relation(fields: [issueId], references: [id])
+  
+  authors     ArticleAuthor[]
+}
+
+model Author {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  affiliation String?
+  orcid       String?
+  bio         String?
+  createdAt   DateTime @default(now())
+  
+  articles    ArticleAuthor[]
+}
+
+model ArticleAuthor {
+  id        String  @id @default(cuid())
+  order     Int
+  
+  articleId String
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  
+  authorId  String
+  author    Author  @relation(fields: [authorId], references: [id])
+  
+  @@unique([articleId, authorId])
+}
+
+model Issue {
+  id          String   @id @default(cuid())
+  year        Int
+  volume      Int
+  issue       Int
+  published   DateTime
+  coverImage  String?
+  description String?
+  createdAt   DateTime @default(now())
+  
+  articles    Article[]
+  
+  @@unique([year, volume, issue])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("editor")
+  createdAt DateTime @default(now())
+}
