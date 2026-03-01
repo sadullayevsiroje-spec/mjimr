@@ -20,6 +20,12 @@ export default async function ArticlesPage() {
     }
   })
 
+  // Serialize dates for client component
+  const serializedArticles = articles.map(article => ({
+    ...article,
+    publishedAt: article.publishedAt.toISOString()
+  }))
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
@@ -29,7 +35,7 @@ export default async function ArticlesPage() {
         </Link>
       </div>
 
-      <ArticlesList articles={articles} />
+      <ArticlesList articles={serializedArticles} />
 
       <div className="mt-6">
         <Link href="/admin" className="text-blue-600 hover:underline">

@@ -7,7 +7,7 @@ import { useState } from 'react'
 type Article = {
   id: string
   title: string
-  publishedAt: Date
+  publishedAt: string // Changed from Date to string
   issue: {
     year: number
     volume: number
