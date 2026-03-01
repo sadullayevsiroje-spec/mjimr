@@ -78,7 +78,7 @@ export default function RootLayout({
           href="/feed.xml"
         />
       </head>
-      <body>
+      <body className="bg-gray-50">
         <Navbar />
         <main className="min-h-screen">
           {children}
