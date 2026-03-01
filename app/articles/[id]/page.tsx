@@ -54,7 +54,7 @@ export async function generateMetadata({
       'citation_firstpage': article.pages?.split('-')[0] || '',
       'citation_lastpage': article.pages?.split('-')[1] || '',
       'citation_doi': article.doi || '',
-      'citation_issn': journal.issn,
+      // 'citation_issn': journal.issn, // Removed - will add when real ISSN is obtained
       'citation_language': 'en',
       'citation_abstract_html_url': `https://mjimr.vercel.app/articles/${article.id}`,
       'citation_pdf_url': `https://mjimr.vercel.app/articles/${article.id}/pdf`,
@@ -137,7 +137,7 @@ export default async function ArticlePage({
         "isPartOf": {
           "@type": "Periodical",
           "name": journal.name,
-          "issn": journal.issn
+          // "issn": journal.issn // Removed - will add when real ISSN is obtained
         }
       }
     },

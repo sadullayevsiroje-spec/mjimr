@@ -54,7 +54,7 @@ export default function RootLayout({
     '@type': 'ScholarlyJournal',
     name: journal.name,
     alternateName: journal.shortName,
-    issn: journal.issn,
+    // issn: journal.issn, // Removed - will add when real ISSN is obtained
     publisher: {
       '@type': 'Organization',
       name: journal.publisher,

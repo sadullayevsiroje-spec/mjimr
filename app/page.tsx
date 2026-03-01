@@ -44,14 +44,14 @@ export default async function Home() {
         </h1>
         <p className="text-gray-700 text-lg max-w-3xl mx-auto">{journal.description}</p>
         <div className="mt-6 flex items-center justify-center space-x-4 text-sm">
-          <span className="bg-primary-100 text-primary-700 px-4 py-2 rounded-full font-semibold">
-            ISSN: {journal.issn}
-          </span>
           <span className="bg-secondary-100 text-secondary-700 px-4 py-2 rounded-full font-semibold">
             {journal.frequency}
           </span>
           <span className="bg-accent-100 text-accent-700 px-4 py-2 rounded-full font-semibold">
             Open Access
+          </span>
+          <span className="bg-primary-100 text-primary-700 px-4 py-2 rounded-full font-semibold">
+            Peer Reviewed
           </span>
         </div>
       </div>

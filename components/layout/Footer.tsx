@@ -32,12 +32,12 @@ export default function Footer() {
               {journal.email}
             </p>
             <p className="text-sm text-gray-300">
-              <span className="text-primary-400">ISSN:</span><br/>
-              {journal.issn}
-            </p>
-            <p className="text-sm text-gray-300 mt-2">
               <span className="text-primary-400">Frequency:</span><br/>
               {journal.frequency}
+            </p>
+            <p className="text-sm text-gray-300 mt-2">
+              <span className="text-primary-400">Established:</span><br/>
+              {journal.established}
             </p>
           </div>
         </div>
