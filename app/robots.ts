@@ -6,12 +6,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin/', '/secret-admin-panel-x9k2m7p4/', '/admin-login/'],
+        disallow: ['/admin/', '/admin-login/'],
       },
       {
         userAgent: 'Googlebot',
         allow: '/',
-        disallow: ['/admin/', '/secret-admin-panel-x9k2m7p4/', '/admin-login/'],
+        disallow: ['/admin/', '/admin-login/'],
       },
       {
         userAgent: 'Googlebot-Scholar',

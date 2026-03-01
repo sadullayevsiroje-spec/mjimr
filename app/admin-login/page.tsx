@@ -23,8 +23,8 @@ export default function AdminLoginPage() {
       })
 
       if (response.ok) {
-        // Redirect to secret admin URL to set cookie
-        window.location.href = '/secret-admin-panel-x9k2m7p4'
+        // Redirect to admin panel
+        router.push('/admin')
       } else {
         setError('Noto\'g\'ri parol. Qaytadan urinib ko\'ring.')
       }

@@ -1,23 +1,26 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const { password } = await request.json()
     
-    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'change-this-password'
-    
-    if (password === ADMIN_PASSWORD) {
-      return NextResponse.json({ success: true })
-    } else {
-      return NextResponse.json(
-        { error: 'Invalid password' },
-        { status: 401 }
-      )
+    // Verify password
+    if (password === process.env.ADMIN_PASSWORD) {
+      const response = NextResponse.json({ success: true })
+      
+      // Set authentication cookie (1 hour)
+      response.cookies.set('admin_authenticated', 'true', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 60 * 60, // 1 hour
+      })
+      
+      return response
     }
+    
+    return NextResponse.json({ error: 'Invalid password' }, { status: 401 })
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
 }
