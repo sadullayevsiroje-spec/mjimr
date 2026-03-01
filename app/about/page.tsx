@@ -1,4 +1,13 @@
 import { journal } from '@/data/journal'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'About',
+  description: `Learn about ${journal.name}, an international peer-reviewed open access journal publishing high-quality research in medical and health sciences since ${journal.established}.`,
+  alternates: {
+    canonical: 'https://mjimr.vercel.app/about',
+  },
+}
 
 export default function AboutPage() {
   return (

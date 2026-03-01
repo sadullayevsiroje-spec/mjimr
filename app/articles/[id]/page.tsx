@@ -32,12 +32,16 @@ export async function generateMetadata({
     title: `${article.title} | ${journal.shortName}`,
     description: article.abstract,
     authors: article.authors.map(a => ({ name: a.author.name })),
+    alternates: {
+      canonical: `https://mjimr.vercel.app/articles/${params.id}`,
+    },
     openGraph: {
       title: article.title,
       description: article.abstract,
       type: 'article',
       publishedTime: article.publishedAt.toISOString(),
       authors: article.authors.map(a => a.author.name),
+      url: `https://mjimr.vercel.app/articles/${params.id}`,
     },
     other: {
       // Google Scholar meta tags
@@ -65,10 +69,37 @@ export default async function ArticlePage({
 }) {
   const article = await prisma.article.findUnique({
     where: { id: params.id },
-    include: {
-      issue: true,
+    select: {
+      id: true,
+      title: true,
+      abstract: true,
+      content: true,
+      doi: true,
+      pages: true,
+      keywords: true,
+      pdfUrl: true,
+      publishedAt: true,
+      issue: {
+        select: {
+          id: true,
+          year: true,
+          volume: true,
+          issue: true,
+          published: true,
+        }
+      },
       authors: {
-        include: { author: true },
+        select: {
+          id: true,
+          order: true,
+          author: {
+            select: {
+              id: true,
+              name: true,
+              affiliation: true,
+            }
+          }
+        },
         orderBy: { order: 'asc' }
       }
     }

@@ -1,4 +1,13 @@
 import { journal } from '@/data/journal'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Contact',
+  description: `Contact the editorial office of ${journal.name}. Get in touch for manuscript submissions, peer review inquiries, and general questions.`,
+  alternates: {
+    canonical: 'https://mjimr.vercel.app/contact',
+  },
+}
 
 export default function ContactPage() {
   return (

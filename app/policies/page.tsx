@@ -1,3 +1,13 @@
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Journal Policies',
+  description: 'Review our journal policies including open access, copyright, peer review, plagiarism, and retraction policies.',
+  alternates: {
+    canonical: 'https://mjimr.vercel.app/policies',
+  },
+}
+
 export default function PoliciesPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">

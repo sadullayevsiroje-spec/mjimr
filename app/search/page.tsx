@@ -1,5 +1,14 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Search Articles',
+  description: 'Search through our collection of peer-reviewed medical research articles, clinical studies, and health sciences publications.',
+  alternates: {
+    canonical: 'https://mjimr.vercel.app/search',
+  },
+}
 
 export default async function SearchPage({
   searchParams,

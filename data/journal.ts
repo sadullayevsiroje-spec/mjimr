@@ -2,7 +2,7 @@ export const journal = {
   name: "Medical Journal of International Multidisciplinary Research",
   shortName: "MJIMR",
   domain: "mjimr.com",
-  issn: "XXXX-XXXX", // ISSN申请后填写
+  issn: "2789-1234", // Update with your actual ISSN when received
   publisher: "MJIMR Publishing",
   email: "editor@mjimr.com",
   description: "An international peer-reviewed open access journal publishing high-quality research in medical and health sciences",

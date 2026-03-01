@@ -1,6 +1,18 @@
 import Link from 'next/link'
 import { journal } from '@/data/journal'
 import { prisma } from '@/lib/prisma'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: journal.name,
+  description: journal.description,
+  alternates: {
+    canonical: 'https://mjimr.vercel.app/',
+  },
+  openGraph: {
+    url: 'https://mjimr.vercel.app/',
+  },
+}
 
 export default async function Home() {
   // Get current issue with articles

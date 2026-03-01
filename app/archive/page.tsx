@@ -1,5 +1,14 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Archives',
+  description: 'Browse all published issues and volumes of our medical journal. Access peer-reviewed research articles from our complete archive.',
+  alternates: {
+    canonical: 'https://mjimr.vercel.app/archive',
+  },
+}
 
 export default async function ArchivePage() {
   const issues = await prisma.issue.findMany({

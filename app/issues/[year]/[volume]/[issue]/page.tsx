@@ -2,6 +2,46 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import { journal } from '@/data/journal'
+import type { Metadata } from 'next'
+
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: { year: string; volume: string; issue: string } 
+}): Promise<Metadata> {
+  const issueData = await prisma.issue.findFirst({
+    where: {
+      year: parseInt(params.year),
+      volume: parseInt(params.volume),
+      issue: parseInt(params.issue)
+    },
+    include: {
+      _count: {
+        select: { articles: true }
+      }
+    }
+  })
+
+  if (!issueData) {
+    return {
+      title: 'Issue Not Found'
+    }
+  }
+
+  return {
+    title: `Vol. ${issueData.volume} No. ${issueData.issue} (${issueData.year})`,
+    description: `Browse ${issueData._count.articles} peer-reviewed articles published in ${journal.name}, Volume ${issueData.volume}, Issue ${issueData.issue}, ${issueData.year}.`,
+    alternates: {
+      canonical: `https://mjimr.vercel.app/issues/${params.year}/${params.volume}/${params.issue}`,
+    },
+    openGraph: {
+      title: `${journal.shortName} - Vol. ${issueData.volume} No. ${issueData.issue} (${issueData.year})`,
+      description: `${issueData._count.articles} articles published in this issue`,
+      type: 'website',
+      url: `https://mjimr.vercel.app/issues/${params.year}/${params.volume}/${params.issue}`,
+    },
+  }
+}
 
 export default async function IssuePage({ 
   params 

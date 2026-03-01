@@ -15,9 +15,6 @@ export const metadata: Metadata = {
   creator: journal.publisher,
   publisher: journal.publisher,
   metadataBase: new URL('https://mjimr.vercel.app'),
-  alternates: {
-    canonical: '/',
-  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -43,9 +40,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // Google Search Console verification
-    // Replace with your actual verification code from Google Search Console
-    google: 'your-google-verification-code-here',
+    google: 'google19a0f3b907159c83', // From public/google19a0f3b907159c83.html
   },
 }
 
@@ -54,8 +49,35 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ScholarlyJournal',
+    name: journal.name,
+    alternateName: journal.shortName,
+    issn: journal.issn,
+    publisher: {
+      '@type': 'Organization',
+      name: journal.publisher,
+    },
+    description: journal.description,
+    url: 'https://mjimr.vercel.app',
+    inLanguage: 'en',
+  }
+
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={`${journal.name} RSS Feed`}
+          href="/feed.xml"
+        />
+      </head>
       <body>
         <Navbar />
         <main className="min-h-screen">

@@ -1,4 +1,13 @@
 import { journal } from '@/data/journal'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Author Guidelines',
+  description: 'Comprehensive submission guidelines for authors. Learn about manuscript preparation, peer review process, and publication requirements.',
+  alternates: {
+    canonical: 'https://mjimr.vercel.app/author-guidelines',
+  },
+}
 
 export default function AuthorGuidelinesPage() {
   return (

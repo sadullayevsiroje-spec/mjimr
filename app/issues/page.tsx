@@ -1,5 +1,14 @@
 import Link from 'next/link'
 import { currentIssue } from '@/data/currentIssue'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Current Issue',
+  description: `Browse the latest issue of our medical journal - Volume ${currentIssue.volume}, Issue ${currentIssue.issue} (${currentIssue.year}). Access peer-reviewed research articles.`,
+  alternates: {
+    canonical: 'https://mjimr.vercel.app/issues',
+  },
+}
 
 export default function CurrentIssuePage() {
   return (

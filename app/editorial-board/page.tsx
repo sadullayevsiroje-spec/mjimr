@@ -1,5 +1,14 @@
 import { prisma } from '@/lib/prisma'
 import Image from 'next/image'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Editorial Board',
+  description: 'Meet our distinguished editorial board members - leading experts in medical and health sciences who guide our peer-review process.',
+  alternates: {
+    canonical: 'https://mjimr.vercel.app/editorial-board',
+  },
+}
 
 export default async function EditorialBoardPage() {
   const members = await prisma.editorialBoard.findMany({
