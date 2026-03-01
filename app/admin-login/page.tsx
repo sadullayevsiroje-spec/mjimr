@@ -65,6 +65,7 @@ export default function AdminLoginPage() {
                 placeholder="Parolni kiriting"
                 required
                 autoFocus
+                autoComplete="off"
               />
               <button
                 type="button"
