@@ -4,8 +4,13 @@ import type { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   
-  // Protect admin routes
-  if (pathname.startsWith('/admin') && pathname !== '/admin-login') {
+  // Allow access to admin-login page without authentication
+  if (pathname === '/admin-login') {
+    return NextResponse.next()
+  }
+  
+  // Protect all admin routes
+  if (pathname.startsWith('/admin')) {
     // Check if user is authenticated
     const adminToken = request.cookies.get('admin_authenticated')
     
@@ -19,5 +24,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/admin-login'],
 }
